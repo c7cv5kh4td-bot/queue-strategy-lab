@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7faff">
+  <title>Queue Strategy Lab — Which line should you choose?</title>
+  <style>
+:root{color-scheme:light;--navy:#10183d;--blue:#2866ee;--indigo:#6539f8;--green:#06c866;--red:#ff2852;--text:#142348;--muted:#627391;--line:#dfebfb;--bg:#f7faff;--white:#fff;--font:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{background:linear-gradient(#f9fbff,#f3f8ff);color:var(--text);font-family:var(--font);margin:0;line-height:1.45}.page-shell{max-width:1700px;margin:0 auto;padding:0 26px}.topbar{padding:25px 8px 21px;display:flex;justify-content:space-between;align-items:center;gap:22px}.brand-lockup{display:flex;align-items:center;gap:22px;min-width:0}.brand-icon{background:linear-gradient(145deg,#7180ff,#5d58ee);color:white;display:grid;place-items:center;width:76px;height:76px;flex-shrink:0;border-radius:16px;box-shadow:0 7px 20px #586cf02b}.brand-icon svg{width:47px;height:47px}h1,h2,h3,p{margin-top:0}h1{color:var(--navy);font-size:clamp(24px,2.6vw,41px);letter-spacing:-.045em;line-height:1.1;font-weight:850;margin:0 0 5px}.brand-lockup p{font-size:clamp(15px,1.5vw,23px);color:#71809c;margin:0}.top-actions{display:flex;align-items:center;gap:13px}.button{border:1px solid #cbdcf5;background:white;color:#17254e;padding:17px 20px;border-radius:13px;font-family:inherit;font-weight:740;font-size:14px;white-space:nowrap;cursor:pointer;box-shadow:0 3px 9px #224cc10b;transition:background-color .15s,transform .15s,box-shadow .15s}.button:hover{transform:translateY(-1px);box-shadow:0 5px 14px #224cc11a}.button:focus-visible{outline:3px solid #a3bdff;outline-offset:3px}.button-primary{background:#2866f1;color:white;border-color:#2866f1}.button-primary:hover{background:#1453df}.button-symbol{font-size:20px;display:inline-block;vertical-align:-2px;margin-right:7px}.context-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:3px 6px 9px}.context-title{font-size:11px;font-weight:850;letter-spacing:.14em;color:#586d9a;display:flex;gap:8px;align-items:center}.context-dot{width:8px;height:8px;border-radius:50%;background:var(--blue)}.legend{display:flex;align-items:center;gap:15px;color:#687a97;font-size:12px}.legend>span{display:flex;align-items:center;gap:6px}.key-circle,.key-square{display:inline-block;width:11px;height:11px}.key-circle{border-radius:50%}.key-clerk{background:var(--green)}.key-customer{background:var(--red)}.key-square{background:var(--indigo);border-radius:2px}.helper-note{color:#7b8aa5;font-size:12px;margin:0 6px 15px;max-width:1050px}.queue-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.queue-card{border:1px solid var(--line);background:white;border-radius:17px;padding:22px 20px 13px;min-width:0;box-shadow:0 3px 16px #2564ba08;transition:border-color .2s,box-shadow .2s}.queue-card.is-fastest{border-color:#7be3ba;box-shadow:inset 0 0 0 2px #dbf8e7}.queue-card-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.queue-card-title h3{font-size:clamp(23px,2vw,30px);letter-spacing:-.04em;line-height:1.15;font-weight:850;color:var(--navy);margin:0}.open-pill{background:#e7f8ef;border-radius:30px;padding:7px 14px;display:inline-flex;align-items:center;gap:9px;color:#07763f;font-weight:750;font-size:13px;white-space:nowrap}.open-pill i{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--green)}.queue-content{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:16px}.queue-illustration{min-height:401px;display:flex;flex-direction:column;align-items:center;min-width:0}.cashier-position{height:72px;display:flex;align-items:flex-end;justify-content:center;width:100%}.cashier-dot{background:var(--green);display:block;width:66px;height:66px;border-radius:50%;box-shadow:inset -4px -3px 0 #ffffff1a;border:3px solid #28d67a;animation:cashier-swing 2.4s ease-in-out infinite alternate;animation-delay:var(--clerk-phase,0s);transform-origin:center bottom}.checkout-counter{width:100%;max-width:235px;height:75px;background:#cacaca;border-bottom:5px solid #bbbbbb;border-radius:5px;position:relative;margin-top:0}.counter-item{position:absolute;background:#6638ff;display:block;border-radius:4px;width:24px;height:31px;box-shadow:inset -3px -3px 0 #ffffff16;animation:item-rock 1.8s ease-in-out infinite alternate}.counter-item-1{top:16px;left:28%;transform:rotate(-7deg)}.counter-item-2{top:29px;left:58%;transform:rotate(8deg);animation-delay:-.9s}.counter-item-3{top:8px;left:69%;transform:rotate(-3deg);animation-delay:-.4s}.counter-item-4{top:37px;left:39%;transform:rotate(9deg);animation-delay:-.7s}.customer-list{width:100%;padding-top:16px;display:flex;flex-direction:column;align-items:center;gap:9px}.customer-row{min-height:48px;display:grid;grid-template-columns:54px minmax(0,1fr);align-items:center;gap:5px;width:126px;transform:translateX(11px)}.customer-dot{display:block;width:44px;height:44px;border-radius:50%;background:var(--red);border:2px solid #ff4d6a;box-shadow:inset -3px -4px 0 #ffffff12;animation:customer-sway 2.7s ease-in-out infinite alternate;animation-delay:var(--person-phase,0s)}.customer-items{white-space:nowrap;background:#fff3f5;border:1px solid #ffe1e6;color:#c63657;border-radius:6px;font-size:12px;font-weight:800;padding:4px 5px;justify-self:start;font-variant-numeric:tabular-nums}.customer-items small{font-size:9px;font-weight:650}.stats-panel{background:linear-gradient(145deg,#f8faff,#f2f6fb);border-radius:12px;padding:5px 14px;min-width:0;align-self:start}.stat-entry{padding:13px 0 12px;border-bottom:1px solid #e2eaf5}.stat-entry:last-child{border-bottom:0}.stat-title{color:#627393;display:block;font-size:clamp(11px,1.05vw,15px);line-height:1.25;margin-bottom:7px}.stat-title small{display:block;font-size:11px}.stat-number{display:flex;align-items:center;gap:10px;min-width:0}.stat-number strong{color:#111a3d;font-size:clamp(18px,1.6vw,25px);letter-spacing:-.025em;white-space:nowrap;font-weight:800;font-variant-numeric:tabular-nums}.stat-mini-icon{font-style:normal;font-size:24px;line-height:1;color:var(--text);width:25px;text-align:center;flex-shrink:0}.icon-red{color:var(--red)}.icon-purple{color:var(--indigo)}.icon-time{color:#334877}.stat-number strong.muted-value{color:#8391a8;font-size:clamp(14px,1.3vw,19px);letter-spacing:0}.queue-caption{font-size:11px;color:#8793a9;text-align:center;margin:6px 0 0;min-height:18px}.panel{background:white;border:1px solid var(--line);border-radius:17px;padding:18px 17px 15px;margin-top:18px;box-shadow:0 3px 16px #2564ba08}.panel-heading{display:flex;align-items:start;justify-content:space-between;gap:20px;padding:0 5px;margin-bottom:13px}.panel-heading h2{font-size:clamp(21px,1.8vw,29px);color:var(--navy);font-weight:850;letter-spacing:-.04em;margin:0 0 0}.panel-heading p{font-size:14px;color:#7b8aa7;margin:0}.section-chip{font-size:10px;font-weight:800;letter-spacing:.10em;border:1px solid #e1eafe;color:#7a8cab;border-radius:30px;padding:7px 12px;white-space:nowrap}.strategy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.strategy-card{border-radius:13px;padding:16px 15px 12px;min-width:0}.strategy-shortest{background:linear-gradient(110deg,#edf5ff,#e8f3ff);--accent:#1554d7;--subtle:#dcecff}.strategy-fewest{background:linear-gradient(110deg,#f2edff,#edeaff);--accent:#5733e8;--subtle:#e7dfff}.strategy-estimated{background:linear-gradient(110deg,#e6faef,#e1f6ea);--accent:#087b43;--subtle:#d7f2e1}.strategy-title-row{display:flex;align-items:start;gap:13px;min-height:63px}.strategy-icon{font-size:29px;font-weight:950;color:var(--accent);line-height:1;min-width:29px}.strategy-title-row h3{color:var(--accent);font-size:17px;line-height:1.3;letter-spacing:-.025em;margin:0 0 2px;font-weight:820}.strategy-title-row p{font-size:12px;line-height:1.35;color:#6981a5;margin:0}.selection-box{border-radius:10px;border:1px solid #ffffffbd;background:var(--subtle);padding:9px 11px;display:flex;align-items:center;justify-content:space-between;gap:12px}.selection-box>div{min-width:0}.selection-box strong{color:var(--accent);font-size:14px;white-space:nowrap}.selection-box span{display:block;font-size:11px;color:#6e85ac}.selection-numbers{text-align:right}.selection-numbers strong{font-size:12px}.selection-numbers span{white-space:nowrap}.trial-placeholder,.preview-fallback{background:#f5f8ff;border:1px dashed #cadcf3;padding:23px;border-radius:10px;color:#6b7b98;font-size:13px;text-align:center}.trial-results-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px;padding:8px}.trial-bars{display:flex;flex-direction:column;gap:17px;justify-content:center}.bar-line{display:grid;grid-template-columns:minmax(140px,1.1fr) minmax(50px,1.5fr) 72px;align-items:center;gap:14px;font-size:13px}.bar-line>span{font-weight:750}.bar-line>strong{font-variant-numeric:tabular-nums;font-size:13px;text-align:right}.bar-track{background:#e9eef9;border-radius:20px;height:18px;overflow:hidden}.bar-fill{background:#a0abca;border-radius:20px;height:100%;transition:width .25s}.bar-best{background:#1dcf83}.trial-summary-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.trial-summary-card{background:#f4f7ff;border-radius:10px;padding:12px;display:flex;flex-direction:column;justify-content:center;min-width:0}.trial-summary-card>span{font-size:11px;font-weight:720;color:#627393;min-height:32px}.trial-summary-card strong{font-size:25px;color:#142b60;line-height:1.25}.trial-summary-card small{font-size:10px;color:#8492aa}.experiment-note{font-size:12px;color:#7081a0;border-top:1px solid #eaf0fa;margin:14px 6px 0;padding-top:11px}.experiment-note strong{color:#3c557c}.method-panel{display:grid;grid-template-columns:minmax(190px,1fr) 2.3fr;gap:24px;padding:24px 27px;background:#edf3fe;border-radius:16px;margin:20px 0 25px}.mini-label{font-size:11px;color:#5973a4;letter-spacing:.12em;font-weight:900}.method-heading h2{font-size:21px;letter-spacing:-.03em;line-height:1.25;margin:8px 0 0}.method-text{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.method-text p{font-size:12px;color:#667895;line-height:1.6;margin:0}.method-text strong{color:#324d79}footer{border-top:1px solid #e2ebf8;display:flex;justify-content:space-between;color:#8191ab;font-size:10px;font-weight:750;letter-spacing:.12em;padding:20px 3px 32px;gap:15px}
+@keyframes customer-sway{0%{transform:translateX(-1.6px) rotate(-1.1deg)}100%{transform:translateX(1.6px) rotate(1.1deg)}}
+@keyframes cashier-swing{0%{transform:translateX(-4px) rotate(-3deg)}100%{transform:translateX(4px) rotate(3deg)}}
+@keyframes item-rock{from{translate:0 -1px}to{translate:0 1px}}
+@media(max-width:1280px){.topbar{align-items:flex-start;flex-direction:column}.top-actions{align-self:stretch}.top-actions .button{flex:1}.queue-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.queue-card{padding:15px 10px 12px}.queue-content{gap:8px}.stats-panel{padding:3px 7px}.stat-title{font-size:11px}.stat-number{gap:3px}.stat-number strong{font-size:16px}.stat-mini-icon{font-size:18px;width:19px}.queue-illustration{min-height:377px}.customer-dot{width:39px;height:39px}.customer-row{grid-template-columns:44px minmax(0,1fr);min-height:42px;width:110px}.customer-items{font-size:10px}.counter-item{width:20px;height:27px}.open-pill{padding:6px 9px;font-size:11px}.strategy-title-row h3{font-size:14px}.method-text{grid-template-columns:1fr}}
+@media(max-width:920px){.page-shell{padding:0 16px}.queue-grid{grid-template-columns:1fr;gap:14px}.queue-card{padding:18px 19px 12px}.queue-content{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}.queue-illustration{min-height:380px}.stats-panel{padding:6px 20px}.stat-title{font-size:14px}.stat-number{gap:12px}.stat-number strong{font-size:24px}.stat-mini-icon{font-size:25px;width:26px}.open-pill{font-size:13px}.customer-dot{width:44px;height:44px}.customer-row{grid-template-columns:53px minmax(0,1fr);width:135px;min-height:48px}.customer-items{font-size:12px}.strategy-grid{grid-template-columns:1fr}.strategy-title-row{min-height:auto;margin-bottom:12px}.trial-results-layout{grid-template-columns:1fr}.method-panel{grid-template-columns:1fr}}
+@media(max-width:580px){.page-shell{padding:0 12px}.topbar{padding:17px 2px 17px;gap:17px}.brand-lockup{gap:11px}.brand-icon{width:55px;height:55px;border-radius:12px}.brand-icon svg{width:34px;height:34px}.brand-lockup h1{font-size:25px}.brand-lockup p{font-size:14px}.top-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.top-actions .button{font-size:11px;padding:11px 8px;white-space:normal}.top-actions .button:first-child{grid-column:1/-1}.button-symbol{font-size:15px;margin-right:2px}.context-bar{align-items:flex-start;flex-direction:column;gap:10px}.context-title{font-size:10px}.helper-note{font-size:11px;line-height:1.55}.queue-card{padding:16px 12px 10px}.queue-content{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:9px}.queue-illustration{min-height:378px}.cashier-dot{width:60px;height:60px}.cashier-position{height:66px}.checkout-counter{height:68px}.customer-row{grid-template-columns:43px minmax(0,1fr);width:104px;min-height:45px;gap:3px;transform:translateX(4px)}.customer-dot{width:40px;height:40px}.customer-items{font-size:10px;padding:3px 4px}.customer-items small{font-size:8px}.stats-panel{padding:4px 9px}.stat-entry{padding:11px 0}.stat-title{font-size:11px}.stat-number{gap:5px}.stat-number strong{font-size:19px}.stat-mini-icon{font-size:19px;width:19px}.panel{padding:15px 11px}.panel-heading p{font-size:12px}.section-chip{display:none}.bar-line{grid-template-columns:1fr 70px;gap:5px}.bar-line>span{grid-column:1/-1}.bar-line .bar-track{grid-column:1}.bar-line strong{grid-column:2}.trial-summary-card{padding:9px 6px}.trial-summary-card>span{font-size:9px}.trial-summary-card strong{font-size:21px}.trial-summary-card small{font-size:9px}.method-panel{padding:18px}.method-heading h2{font-size:18px}footer{font-size:9px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+
+.playback-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 18px;padding:14px;background:#eef3ff;border-radius:14px;font-size:13px}.playback-controls .button{padding:10px 20px}.playback-controls select{padding:8px;border:1px solid #cbdcf5;border-radius:8px;background:white;color:var(--text)}.playback-controls small{width:100%;color:var(--muted)}#playback-time{font-variant-numeric:tabular-nums}progress{accent-color:var(--blue);max-width:160px;height:8px}.item-grid{display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(5,7px);gap:3px;padding:7px 9px}.scan-item{background:var(--indigo);border-radius:2px;box-shadow:inset -2px -1px #ffffff30}.scan-item[hidden]{display:none}.counter-count{position:absolute;bottom:2px;width:100%;text-align:center;font-size:10px;font-weight:750;color:#352064}.customer-list{position:relative;height:290px;margin-top:16px;padding:0}.customer-row{position:absolute;top:0;left:50%;margin-left:-52px;will-change:transform,opacity}.live-status{font-size:11px;font-weight:750;color:#5733e8;padding:8px 0;border-bottom:1px solid #e2eaf5;min-height:44px}.playback-paused .cashier-dot,.playback-paused .customer-dot{animation-play-state:paused}.queue-illustration{min-height:440px}
+</style>
+  <script>
+/**
+ * Queue Strategy Lab — functioning educational simulation with a visual checkout UI.
+ * All timings are MODEL ASSUMPTIONS, not measured data.
+ * Every strategy is compared against the very same queue conditions and hidden delays.
+ */
+'use strict';
+
+const CONFIG = Object.freeze({
+  queueCount: 3,
+  fixedMinutesPerCustomer: 1,
+  minutesPerItem: 0.1,
+  delayChancePerCustomer: 0.20,
+  minDelayMinutes: 0.5,
+  maxDelayMinutes: 3,
+  trials: 30,
+});
+
+const STRATEGIES = [
+  {key: 'shortest', name: 'Shortest Queue', rule: 'Choose the line with the fewest customers.', score: q => q.customers.length, icon: '★'},
+  {key: 'fewest', name: 'Fewest Items', rule: 'Choose the line with the fewest total items.', score: q => totalItems(q), icon: '▦'},
+  {key: 'estimated', name: 'Shortest Estimated Wait', rule: 'Choose the line with the lowest estimated wait time.', score: q => estimatedWait(q), icon: '◷'},
+];
+
+const randomBetween = (a, b, rng = Math.random) => a + rng() * (b - a);
+const randomInteger = (a, b, rng = Math.random) => Math.floor(randomBetween(a, b + 1, rng));
+const formatTime = n => `${n.toFixed(1)} min`;
+
+function createScenario(rng = Math.random) {
+  return Array.from({length: CONFIG.queueCount}, (_, index) => ({
+    name: String.fromCharCode(65 + index),
+    customers: Array.from({length: randomInteger(1, 5, rng)}, () => {
+      const items = rng() < 0.55 ? randomInteger(1, 8, rng) : randomInteger(9, 35, rng);
+      const delay = rng() < CONFIG.delayChancePerCustomer ? randomBetween(CONFIG.minDelayMinutes, CONFIG.maxDelayMinutes, rng) : 0;
+      return {items, delay};
+    }),
+  }));
+}
+
+function totalItems(queue) {
+  return queue.customers.reduce((sum, c) => sum + c.items, 0);
+}
+function estimatedWait(queue) {
+  return queue.customers.length * CONFIG.fixedMinutesPerCustomer + totalItems(queue) * CONFIG.minutesPerItem;
+}
+function actualWait(queue) {
+  // Only customers already in front of the arriving person count toward waiting time.
+  return estimatedWait(queue) + queue.customers.reduce((sum, c) => sum + c.delay, 0);
+}
+function chooseQueue(queues, strategy) {
+  // Deterministic tie-breaker: first queue in alphabetical order.
+  return queues.reduce((best, current) => strategy.score(current) < strategy.score(best) ? current : best, queues[0]);
+}
+function evaluateScenario(queues) {
+  const fastestActual = Math.min(...queues.map(actualWait));
+  const choices = STRATEGIES.map(strategy => {
+    const chosen = chooseQueue(queues, strategy);
+    const wait = actualWait(chosen);
+    return {
+      ...strategy,
+      chosenQueue: chosen.name,
+      actualWait: wait,
+      items: totalItems(chosen),
+      customers: chosen.customers.length,
+      estimatedWait: estimatedWait(chosen),
+      wasFastest: Math.abs(wait - fastestActual) < 1e-8,
+    };
+  });
+  return {fastestActual, choices};
+}
+function runTrials(count = CONFIG.trials, rng = Math.random) {
+  const stats = Object.fromEntries(STRATEGIES.map(s => [s.key, {key: s.key, name: s.name, totalWait: 0, optimalChoices: 0}]));
+  for (let round = 0; round < count; round++) {
+    const queues = createScenario(rng); // Shared scenario, including hidden delays.
+    for (const choice of evaluateScenario(queues).choices) {
+      stats[choice.key].totalWait += choice.actualWait;
+      if (choice.wasFastest) stats[choice.key].optimalChoices++;
+    }
+  }
+  return STRATEGIES.map(s => ({
+    ...stats[s.key],
+    averageWait: stats[s.key].totalWait / count,
+    optimalRate: 100 * stats[s.key].optimalChoices / count,
+  }));
+}
+
+let currentScenario = createScenario();
+let isCompared = false;
+
+function renderQueueCards() {
+  const fastest = Math.min(...currentScenario.map(actualWait));
+  document.getElementById('queue-grid').innerHTML = currentScenario.map((queue, laneIndex) => {
+    const best = isCompared && Math.abs(actualWait(queue) - fastest) < 1e-8;
+    const itemBlocks = Array.from({length:35}, (_, i) => `<span class="scan-item" data-item="${i}" aria-hidden="true"></span>`).join('');
+    const customers = queue.customers.map((customer, i) => `
+      <div class="customer-row" data-customer="${i}" aria-label="Customer ${i + 1}: ${customer.items} items">
+        <span class="customer-dot" style="--person-phase:${-((i + laneIndex) % 4) * 0.54}s" aria-hidden="true"></span>
+        <span class="customer-items">${customer.items} <small>items</small></span>
+      </div>`).join('');
+    return `
+      <article class="queue-card ${best ? 'is-fastest' : ''}" aria-label="Queue ${queue.name}, ${queue.customers.length} customers, ${totalItems(queue)} items">
+        <div class="queue-card-title"><h3>Queue ${queue.name}</h3><span class="open-pill"><i></i>${best ? 'Fastest' : 'Open'}</span></div>
+        <div class="queue-content">
+          <div class="queue-illustration">
+            <div class="cashier-position" role="img" aria-label="Green cashier sways slightly while scanning items">
+              <span class="cashier-dot" style="--clerk-phase:${-laneIndex * 0.63}s"></span>
+            </div>
+            <div class="checkout-counter" role="img" aria-label="Gray checkout counter"><div class="item-grid">${itemBlocks}</div><span class="counter-count"></span></div>
+            <div class="customer-list" aria-label="Customers waiting in order, closest to cashier first">${customers}</div>
+          </div>
+          <div class="stats-panel"><div class="live-status"></div>
+            <div class="stat-entry"><span class="stat-title">Customers remaining</span><div class="stat-number"><i class="stat-mini-icon icon-red" aria-hidden="true">●</i><strong>${queue.customers.length}</strong></div></div>
+            <div class="stat-entry"><span class="stat-title">Items remaining</span><div class="stat-number"><i class="stat-mini-icon icon-purple" aria-hidden="true">▣</i><strong>${totalItems(queue)}</strong></div></div>
+            <div class="stat-entry"><span class="stat-title">Initial estimated wait</span><div class="stat-number"><i class="stat-mini-icon icon-time" aria-hidden="true">◷</i><strong>${formatTime(estimatedWait(queue))}</strong></div></div>
+            <div class="stat-entry"><span class="stat-title">Initial actual wait <small>(simulation)</small></span><div class="stat-number"><i class="stat-mini-icon icon-time" aria-hidden="true">◷</i><strong class="${isCompared ? '' : 'muted-value'}">${isCompared ? formatTime(actualWait(queue)) : 'Hidden'}</strong></div></div>
+          </div>
+        </div>
+        <p class="queue-caption">${isCompared ? (best ? '✓ Fastest actual wait in this scenario' : 'Actual wait revealed after comparison') : 'Actual wait includes unknown delays; compare to reveal.'}</p>
+      </article>`;
+  }).join('');
+  paintPlayback();
+}
+
+function renderStrategyCards() {
+  const choices = isCompared ? evaluateScenario(currentScenario).choices : null;
+  document.getElementById('single-result').innerHTML = STRATEGIES.map((strategy, i) => {
+    const choice = choices && choices[i];
+    const metric = !choice ? 'Click Compare to reveal' : strategy.key === 'shortest' ? `${choice.customers} customers` : strategy.key === 'fewest' ? `${choice.items} items` : formatTime(choice.estimatedWait);
+    return `<article class="strategy-card strategy-${strategy.key}">
+      <div class="strategy-title-row"><span class="strategy-icon" aria-hidden="true">${strategy.icon}</span><div><h3>${strategy.name}</h3><p>${strategy.rule}</p></div></div>
+      <div class="selection-box"><div><strong>${choice ? `Queue ${choice.chosenQueue}` : 'Not compared yet'}</strong><span>${choice ? (choice.wasFastest ? '✓ Actually fastest' : 'Not the fastest this round') : 'Same starting queues for all three strategies'}</span></div><div class="selection-numbers"><strong>${metric}</strong><span>${choice ? `${formatTime(choice.actualWait)} actual` : 'Waiting to run'}</span></div></div>
+    </article>`;
+  }).join('');
+}
+
+function renderTrialResults() {
+  const results = runTrials();
+  const fastestAverage = Math.min(...results.map(x => x.averageWait));
+  const largestAverage = Math.max(...results.map(x => x.averageWait));
+  document.getElementById('multi-result').innerHTML = `
+    <div class="trial-results-layout">
+      <div class="trial-bars" aria-label="Average waiting time by strategy across ${CONFIG.trials} simulations">
+        ${results.map(r => `<div class="bar-line"><span>${r.name}</span><div class="bar-track"><div class="bar-fill ${Math.abs(r.averageWait - fastestAverage) < 1e-8 ? 'bar-best' : ''}" style="width:${(r.averageWait / Math.max(0.01, largestAverage) * 100).toFixed(2)}%"></div></div><strong>${formatTime(r.averageWait)}</strong></div>`).join('')}
+      </div>
+      <div class="trial-summary-cards">
+        ${results.map(r => `<div class="trial-summary-card"><span>${r.name}</span><strong>${r.optimalRate.toFixed(0)}%</strong><small>fastest-choice rate<br>${r.optimalChoices} of ${CONFIG.trials} trials</small></div>`).join('')}
+      </div>
+    </div>
+    <p class="experiment-note">Lower average wait is better <strong>within this model</strong>. All three rules see the same randomly generated queues and hidden delays in each trial. Results vary between runs. A strategy gets credit for an actually fastest queue, including ties.</p>`;
+}
+
+// Playback derives entirely from elapsed model time. It never mutates scenario data.
+let elapsed = 0;
+let playing = false;
+let previousFrame = null;
+let speed = 1;
+const duration = () => Math.max(...currentScenario.map(actualWait));
+function laneAt(queue, time) {
+  let start = 0;
+  for (let index = 0; index < queue.customers.length; index++) {
+    const customer = queue.customers[index];
+    const scanEnd = .2 + customer.items * CONFIG.minutesPerItem;
+    const end = CONFIG.fixedMinutesPerCustomer + customer.items * CONFIG.minutesPerItem + customer.delay;
+    const local = time - start;
+    if (local < end - 1e-9) {
+      const items = Math.max(0, customer.items - Math.floor(Math.max(0, local - .2 + 1e-9) / CONFIG.minutesPerItem));
+      const departing = Math.max(0, Math.min(1, (local - (end - .2)) / .2));
+      const phase = local < .2 ? 'Ready to scan' : local < scanEnd ? 'Scanning' : local < scanEnd + .6 ? 'Payment' : local < end - .2 ? 'Unexpected delay' : 'Leaving';
+      return {index, items, departing, phase, remaining: queue.customers.length - index,
+        totalItems: items + queue.customers.slice(index + 1).reduce((n,c) => n + c.items, 0)};
+    }
+    start += end;
+  }
+  return {index:queue.customers.length, items:0, departing:0, phase:'Queue complete', remaining:0, totalItems:0};
+}
+function paintPlayback() {
+  document.body.classList.toggle('playback-paused', !playing);
+  document.querySelectorAll('.queue-card').forEach((card, lane) => {
+    const q = currentScenario[lane], state = laneAt(q, elapsed);
+    const rows = card.querySelectorAll('.customer-row');
+    rows.forEach((row, i) => {
+      row.style.visibility = i < state.index ? 'hidden' : 'visible';
+      row.style.opacity = i === state.index ? 1 - state.departing : 1;
+      row.style.transform = `translate(${i === state.index ? state.departing * 65 : 0}px, ${(i - state.index - (i > state.index ? state.departing : 0)) * 57}px)`;
+      row.querySelector('.customer-items').innerHTML = `${i === state.index ? state.items : q.customers[i].items} <small>items</small>`;
+    });
+    card.querySelectorAll('.scan-item').forEach((item,i) => item.hidden = i >= state.items);
+    card.querySelector('.counter-count').textContent = `${state.items} items on counter`;
+    card.querySelector('.checkout-counter').setAttribute('aria-label', `${state.items} items on counter`);
+    card.querySelector('.live-status').textContent = state.remaining ? `Customer ${state.index + 1} · ${state.phase}` : state.phase;
+    const numbers = card.querySelectorAll('.stat-number strong');
+    numbers[0].textContent = state.remaining;
+    numbers[1].textContent = state.totalItems;
+    card.setAttribute('aria-label', `Queue ${q.name}, ${state.remaining} customers, ${state.totalItems} items remaining`);
+  });
+  document.getElementById('play-btn').textContent = playing ? 'Pause' : elapsed >= duration() ? 'Replay' : 'Play';
+  document.getElementById('play-btn').setAttribute('aria-pressed', String(playing));
+  document.getElementById('playback-time').textContent = `${elapsed.toFixed(1)} / ${duration().toFixed(1)} model min · ${elapsed >= duration() ? 'Complete' : playing ? 'Playing' : 'Paused'}`;
+  document.getElementById('playback-progress').value = elapsed / duration();
+}
+function tick(now) {
+  if (playing && previousFrame !== null) {
+    // 1× = 1 model minute per 4 real seconds; speed changes presentation only.
+    elapsed = Math.min(duration(), elapsed + (now - previousFrame) / 4000 * speed);
+    if (elapsed >= duration()) playing = false;
+    paintPlayback();
+  }
+  previousFrame = now;
+  requestAnimationFrame(tick);
+}
+function bindControls() {
+  document.getElementById('generate-btn').addEventListener('click', () => {
+    playing = false; elapsed = 0; previousFrame = null;
+    currentScenario = createScenario();
+    isCompared = false;
+    renderQueueCards(); renderStrategyCards();
+  });
+  document.getElementById('compare-btn').addEventListener('click', () => {
+    isCompared = true;
+    renderQueueCards(); renderStrategyCards();
+  });
+  document.getElementById('trial-btn').addEventListener('click', renderTrialResults);
+  document.getElementById('play-btn').addEventListener('click', () => {
+    if (elapsed >= duration()) elapsed = 0;
+    playing = !playing; previousFrame = null; paintPlayback();
+  });
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    playing = false; elapsed = 0; previousFrame = null; paintPlayback();
+  });
+  document.getElementById('speed').addEventListener('change', event => { speed = Number(event.target.value); previousFrame = null; });
+  document.addEventListener('visibilitychange', () => { previousFrame = null; });
+  renderQueueCards(); renderStrategyCards(); requestAnimationFrame(tick);
+}
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindControls);
+  else bindControls();
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {CONFIG, STRATEGIES, createScenario, totalItems, estimatedWait, actualWait, chooseQueue, evaluateScenario, runTrials, laneAt};
+}
+
+</script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand-lockup">
+        <div class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9h4l4 17h17l3-12H13"/><circle cx="18" cy="32" r="2" fill="currentColor" stroke="none"/><circle cx="31" cy="32" r="2" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <div><h1>Queue Strategy Lab</h1><p>Which line should you choose?</p></div>
+      </div>
+      <div class="top-actions" aria-label="Simulator controls">
+        <button type="button" id="generate-btn" class="button button-primary"><span class="button-symbol" aria-hidden="true">↻</span> Generate Queues</button>
+        <button type="button" id="compare-btn" class="button button-outline"><span class="button-symbol" aria-hidden="true">▥</span> Compare Strategies</button>
+        <button type="button" id="trial-btn" class="button button-outline"><span class="button-symbol" aria-hidden="true">▶</span> Run 30 Trials</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="context-bar">
+        <div class="context-title"><span class="context-dot" aria-hidden="true"></span> SUPERMARKET CHECKOUT · THREE QUEUES</div>
+        <div class="legend" aria-label="Color legend"><span><i class="key-circle key-clerk"></i>Cashier</span><span><i class="key-circle key-customer"></i>Customer</span><span><i class="key-square key-item"></i>Items</span></div>
+      </div>
+      <p class="helper-note">This animation replays a precomputed scenario. Each purple block is one item: it disappears when scanned, then the customer leaves and the next customer's full basket appears. All strategies use the same initial queues and hidden delays, regardless of playback. Initial wait metrics stay fixed; remaining counts update live.</p>
+      <div class="playback-controls" aria-label="Checkout playback">
+        <button class="button button-primary" id="play-btn" type="button">Play</button>
+        <button class="button" id="reset-btn" type="button">Reset</button>
+        <label for="speed">Speed <select id="speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></label>
+        <span id="playback-time"></span><progress id="playback-progress" max="1" value="0" aria-label="Scenario progress"></progress>
+        <small>1×: 4 seconds = 1 model minute. Reset replays the same queues.</small>
+      </div>
+
+      <section aria-label="Three visual checkout lines">
+        <div id="queue-grid" class="queue-grid">
+          <div class="preview-fallback">This simulator requires JavaScript. Some in-app HTML previews disable it. Please open the file in Safari or Chrome, or use CodePen.</div>
+        </div>
+      </section>
+
+      <section class="panel comparison-panel" aria-labelledby="comparison-title">
+        <div class="panel-heading"><div><h2 id="comparison-title">Strategy Comparison</h2><p>Three decision rules, tested on the same queue conditions.</p></div><span class="section-chip">ONE SCENARIO</span></div>
+        <div id="single-result" class="strategy-grid" aria-live="polite"><div class="preview-fallback">Click Compare Strategies to reveal the results.</div></div>
+      </section>
+
+      <section class="panel trials-panel" aria-labelledby="trials-title">
+        <div class="panel-heading"><div><h2 id="trials-title">30-Trial Experiment</h2><p>Compare average actual wait across multiple randomly generated scenarios.</p></div><span class="section-chip">REPEATED SIMULATION</span></div>
+        <div id="multi-result" aria-live="polite"><div class="trial-placeholder">Click <strong>Run 30 Trials</strong> to compare average wait times and how often each strategy picks the fastest line.</div></div>
+      </section>
+
+      <section class="method-panel" aria-labelledby="method-title">
+        <div class="method-heading"><span class="mini-label">MODEL RULES</span><h2 id="method-title">What is this simulation assuming?</h2></div>
+        <div class="method-text"><p><strong>Estimated waiting time:</strong> 1 minute per customer + 0.1 minute per item. Each queue has one cashier and customers are served in arrival order.</p><p><strong>Actual waiting time:</strong> Estimated time plus any hidden delay (20% chance per customer; an additional 0.5–3 minutes). The delays are created before any strategy chooses a queue and are identical across strategy comparisons.</p><p>No switching lines or new arrivals. Waiting ends when the arriving customer reaches the cashier, excluding their own checkout time. These parameters are invented for exploring the model, <strong>not measured supermarket data</strong>.</p></div>
+      </section>
+    </main>
+    <footer>REPRESENT A PHENOMENON WITH CODE AND AI <span>HTML · CSS · JAVASCRIPT</span></footer>
+  </div>
+</body>
+</html>
